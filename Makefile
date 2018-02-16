@@ -1,21 +1,21 @@
 LDFLAGS = -pthread -rdynamic
 CXXFLAGS = \
-    -g -D_GNU_SOURCE \
-    -I.
+	-g -D_GNU_SOURCE \
+	-I.
 
 CXXFLAGS += -Wall --std=c++11
 #CXXFLAGS += -O3
 
 EXAMPLE = \
-    example.o \
+	example.o \
 
 PROGRAMS = \
-    example \
+	example \
 
 all: $(PROGRAMS)
 
 example: $(EXAMPLE)
-    $(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
 
 clean:
-    rm -rf $(PROGRAMS) ./*.o ./*.so ./*/*.o ./*/*.so
+	rm -rf $(PROGRAMS) ./*.o ./*.so ./*/*.o ./*/*.so
