@@ -5,7 +5,7 @@
  * https://github.com/greensky00
  *
  * Stack Backtrace
- * Version: 0.1.1
+ * Version: 0.1.3
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -72,7 +72,7 @@ stack_backtrace(char* output_buf, size_t output_buflen) {
 
         char mangled_name[1024];
         char file_line[1024];
-        int ret = fscanf(fp, "%s %s", mangled_name, file_line);
+        int ret = fscanf(fp, "%1023s %1023s", mangled_name, file_line);
         (void)ret;
         pclose(fp);
 
@@ -88,12 +88,14 @@ stack_backtrace(char* output_buf, size_t output_buflen) {
                                 "%s at ", cc );
         } else {
             std::string msg_str = stack_msg[i];
+            std::string _func_name = msg_str;
             size_t s_pos = msg_str.find("(");
             size_t e_pos = msg_str.rfind("+");
-            if (e_pos == std::string::npos) {
-                e_pos = msg_str.rfind(")");
+            if (e_pos == std::string::npos) e_pos = msg_str.rfind(")");
+            if ( s_pos != std::string::npos &&
+                 e_pos != std::string::npos ) {
+                _func_name = msg_str.substr(s_pos+1, e_pos-s_pos-1);
             }
-            std::string _func_name = msg_str.substr(s_pos+1, e_pos-s_pos-1);
             offset += snprintf( output_buf + offset, output_buflen - offset,
                                 "%s() at ", _func_name.c_str() );
         }
