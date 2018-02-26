@@ -65,7 +65,7 @@ stack_backtrace(char* output_buf, size_t output_buflen) {
         }
 
         char cmd[1024];
-        sprintf( cmd,"addr2line -f -e %.*s %" PRIxPTR "",
+        sprintf( cmd, "addr2line -f -e %.*s %" PRIxPTR "",
                  fname_len, stack_msg[i], (uintptr_t)stack_ptr[i] );
         FILE* fp = popen(cmd, "r");
         if (!fp) continue;
